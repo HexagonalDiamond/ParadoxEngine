@@ -6,6 +6,7 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
 import com.paradox.engine.graphics.Graphics;
+import com.paradox.engine.manager.GameObjectManager;
 import com.paradox.engine.util.Observable;
 import com.paradox.engine.util.Observer;
  
@@ -19,6 +20,11 @@ public abstract class Game implements Observer, GameObject {
 	protected Graphics graphics = new Graphics();;
 	
 	/**
+	 * Game object manager
+	 */
+	protected GameObjectManager gom = new GameObjectManager();
+	
+	/**
 	 * Is the game running
 	 */
 	private boolean running;
@@ -26,11 +32,12 @@ public abstract class Game implements Observer, GameObject {
 	 * Loop game 1 frame
 	 */
 	protected void loop() {
-		update();
-		draw();
+		gom.update();
+		gom.draw();
 		Display.update();
 		timing();
-		input();
+		gom.update();
+		gom.input();
 	}
 	
 	/**
@@ -56,14 +63,10 @@ public abstract class Game implements Observer, GameObject {
 	 */
 	public void init(String windowName) {
 		graphics.initialize();
+		Display.setTitle(windowName);
+		gom.addObject(this);
 		initInput();
 		initialize(); //should always be last call
-	}
-	/**
-	 * Initialize graphics
-	 * @param windowName What to name the window
-	 */
-	private void initGraphics(String windowName) {
 	}
 	
 	/**
