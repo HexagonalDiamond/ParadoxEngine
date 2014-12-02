@@ -12,7 +12,7 @@ import com.paradox.engine.util.Observer;
  
 import org.lwjgl.opengl.GL11.*;
 
-public abstract class Game implements Observer {
+public abstract class Game implements Observer, GameObject {
 	/**
 	 * Graphics object
 	 */
@@ -32,26 +32,6 @@ public abstract class Game implements Observer {
 		timing();
 		input();
 	}
-
-	/**
-	 * Initializes extra assets after graphics, sound, input are loaded
-	 */
-	public abstract void initialize();
-	
-	/**
-	 * Draws graphics
-	 */
-	public abstract void draw();
-	
-	/**
-	 * Updates state
-	 */
-	public abstract void update();
-
-	/**
-	 * Responds to input
-	 */
-	public abstract void input();
 	
 	/**
 	 * Maintains FPS and runs other timing related functions

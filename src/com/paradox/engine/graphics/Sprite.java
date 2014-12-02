@@ -1,6 +1,8 @@
 package com.paradox.engine.graphics;
 
-public class Sprite {
+import com.paradox.engine.GameObject;
+
+public abstract class Sprite implements GameObject {
 	protected Graphics graphics;
 	public Sprite(Graphics g) {
 		this.graphics = g;
