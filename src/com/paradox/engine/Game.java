@@ -9,7 +9,7 @@ import com.paradox.engine.util.Observable;
 import com.paradox.engine.util.Observer;
  
  
-import static org.lwjgl.opengl.GL11.*;
+import org.lwjgl.opengl.GL11.*;
 
 public abstract class Game implements Observer {
 	private int width = 800;
@@ -29,6 +29,11 @@ public abstract class Game implements Observer {
 		input();
 	}
 
+	/**
+	 * Initializes extra assets after graphics, sound, input are loaded
+	 */
+	public abstract void initialize();
+	
 	/**
 	 * Draws graphics
 	 */
@@ -68,6 +73,7 @@ public abstract class Game implements Observer {
 	public void init(String windowName) {
 		initGraphics(windowName);
 		initInput();
+		initialize(); //should always be last call
 	}
 	/**
 	 * Initialize graphics
@@ -86,8 +92,11 @@ public abstract class Game implements Observer {
 		}
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
-		GL11.glOrtho(0, width, 0, height, 1, -1);
+		GL11.glOrtho(0, width, height, 0, 1, -1);
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
 	}
 	
 	/**
@@ -113,5 +122,8 @@ public abstract class Game implements Observer {
 			loop();
 		}
 	}
-
+	
+	public static void main(String[] args) {
+		
+	}
 }
