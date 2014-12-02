@@ -5,6 +5,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
+import com.paradox.engine.graphics.Graphics;
 import com.paradox.engine.util.Observable;
 import com.paradox.engine.util.Observer;
  
@@ -12,8 +13,11 @@ import com.paradox.engine.util.Observer;
 import org.lwjgl.opengl.GL11.*;
 
 public abstract class Game implements Observer {
-	private int width = 800;
-	private int height = 600;
+	/**
+	 * Graphics object
+	 */
+	protected Graphics graphics = new Graphics();;
+	
 	/**
 	 * Is the game running
 	 */
@@ -21,7 +25,7 @@ public abstract class Game implements Observer {
 	/**
 	 * Loop game 1 frame
 	 */
-	public void loop() {
+	protected void loop() {
 		update();
 		draw();
 		Display.update();
@@ -71,7 +75,7 @@ public abstract class Game implements Observer {
 	 * @param windowName What to name the window
 	 */
 	public void init(String windowName) {
-		initGraphics(windowName);
+		graphics.initialize();
 		initInput();
 		initialize(); //should always be last call
 	}
@@ -79,34 +83,16 @@ public abstract class Game implements Observer {
 	 * Initialize graphics
 	 * @param windowName What to name the window
 	 */
-	public void initGraphics(String windowName) {
-		try {
-			Display.setDisplayMode(new DisplayMode(width,height));
-			Display.create();
-			Display.setTitle(windowName);
-			Display.setResizable(true);
-			
-		} catch (LWJGLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		GL11.glMatrixMode(GL11.GL_PROJECTION);
-		GL11.glLoadIdentity();
-		GL11.glOrtho(0, width, height, 0, 1, -1);
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
+	private void initGraphics(String windowName) {
 	}
 	
 	/**
 	 * Initializes input
 	 */
-	public void initInput() {
+	private void initInput() {
 		try {
 			Keyboard.create();
 		} catch (LWJGLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
