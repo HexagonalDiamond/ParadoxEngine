@@ -13,11 +13,7 @@ import com.paradox.engine.util.Observer;
  
 import org.lwjgl.opengl.GL11.*;
 
-public abstract class Game implements Observer, GameObject {
-	/**
-	 * Graphics object
-	 */
-	protected Graphics graphics = new Graphics();;
+public abstract class Game implements GameObject {
 	
 	/**
 	 * Game object manager
@@ -36,7 +32,6 @@ public abstract class Game implements Observer, GameObject {
 		gom.draw();
 		Display.update();
 		timing();
-		gom.update();
 		gom.input();
 	}
 	
@@ -62,7 +57,7 @@ public abstract class Game implements Observer, GameObject {
 	 * @param windowName What to name the window
 	 */
 	public void init(String windowName) {
-		graphics.initialize();
+		Graphics.initialize();
 		Display.setTitle(windowName);
 		gom.addObject(this);
 		initInput();

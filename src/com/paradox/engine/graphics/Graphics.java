@@ -12,15 +12,15 @@ public class Graphics {
 	/**
 	 * Initial width of window
 	 */
-	private int width = 800;
+	private static int width = 800;
 	/**
-	 * Initial hieght of window
+	 * Initial height of window
 	 */
-	private int height = 600;
+	private static int height = 600;
 	/**
 	 * Default font
 	 */
-	public TrueTypeFont font;
+	public static TrueTypeFont font;
 	
 	/**
 	 * Draw a line from x1, y1 to x2, y2
@@ -30,7 +30,7 @@ public class Graphics {
 	 * @param y2 Y value of second point
 	 * @param width width of line
 	 */
-	public void drawLine(float x1, float y1, float x2, float y2, int width) {
+	public static void drawLine(float x1, float y1, float x2, float y2, int width) {
 		GL11.glLineWidth(width); 
 		GL11.glBegin(GL11.GL_LINES);
 		GL11.glVertex2f(x1, y1);
@@ -41,7 +41,7 @@ public class Graphics {
 	/**
 	 * Draw a rectangle
 	 */
-	public void drawRect(float x, float y, float w, float h) {
+	public static void drawRect(float x, float y, float w, float h) {
 		GL11.glBegin(GL11.GL_QUADS);
 		    GL11.glVertex2f(x,y);
 		    GL11.glVertex2f(x,y+h);
@@ -59,7 +59,7 @@ public class Graphics {
 	 * @param start_angle angle to start at in radians
 	 * @param end_angle angle to end at in radians
 	 */
-	public void drawArc(int cx, int cy, int r, int num_segments, float start_angle, float end_angle) {
+	public static void drawArc(int cx, int cy, int r, int num_segments, float start_angle, float end_angle) {
 		GL11.glBegin(GL11.GL_LINE_STRIP); 
 	    for(int ii = 0; ii < num_segments; ii++) 
 	    { 
@@ -75,7 +75,7 @@ public class Graphics {
 	/**
 	 * Initializes fonts
 	 */
-	public void initFonts() {
+	public static void initFonts() {
 		Font awtFont = new Font("Arial", Font.BOLD, 12);
 		font = new TrueTypeFont(awtFont, true);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -87,7 +87,7 @@ public class Graphics {
 	 * @param g center y
 	 * @param r radius
 	 */
-	public void drawCircle(int f, int g, int r) {
+	public static void drawCircle(int f, int g, int r) {
 		GL11.glPushMatrix();
 		GL11.glTranslatef(f, g, 0);
 		GL11.glScalef(r, r, 1);
@@ -105,9 +105,9 @@ public class Graphics {
 	/**
 	 * Initializes OpenGL
 	 */
-	public void initialize() {
+	public static void initialize() {
 		try {
-			Display.setDisplayMode(new DisplayMode(width,height));
+			Display.setDisplayMode(new DisplayMode(getWidth(),getHeight()));
 			Display.create();
 			Display.setResizable(true);
 			
@@ -116,7 +116,7 @@ public class Graphics {
 		}
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
-		GL11.glOrtho(0, width, height, 0, 1, -1);
+		GL11.glOrtho(0, getWidth(), getHeight(), 0, 1, -1);
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -124,15 +124,31 @@ public class Graphics {
 		initFonts();
 	}
 	
-	public void drawText(String text, int x, int y) {
-		drawText(text, x, y, this.font);
+	public static void drawText(String text, int x, int y) {
+		drawText(text, x, y, font);
 	}
 	
-	public void drawText(String text, int x, int y, TrueTypeFont font) {
+	public static void drawText(String text, int x, int y, TrueTypeFont font) {
 		int width = 10 + font.getWidth(text);
 		int height = 10 + font.getHeight(text);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		font.drawString(x - (width / 2) + 5, y - (height / 2) + 5, text);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
+	}
+
+	public static int getWidth() {
+		return width;
+	}
+
+	public static void setWidth(int width) {
+		Graphics.width = width;
+	}
+
+	public static int getHeight() {
+		return height;
+	}
+
+	public static void setHeight(int height) {
+		Graphics.height = height;
 	}
 }
