@@ -6,34 +6,40 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
 import com.paradox.engine.graphics.Graphics;
-import com.paradox.engine.manager.GameObjectManager;
 import com.paradox.engine.util.Observable;
 import com.paradox.engine.util.Observer;
  
  
 import org.lwjgl.opengl.GL11.*;
 
-public abstract class Game implements GameObject {
-	
-	/**
-	 * Game object manager
-	 */
-	protected GameObjectManager gom = new GameObjectManager();
+public abstract class Game {
 	
 	/**
 	 * Is the game running
 	 */
 	private boolean running;
+	
+	/**
+	 * Frame number
+	 */
+	protected int frameNumber;
+	
 	/**
 	 * Loop game 1 frame
 	 */
 	protected void loop() {
-		gom.update();
-		gom.draw();
+		input();
+		update();
+		draw();
 		Display.update();
 		timing();
-		gom.input();
+		frameNumber++;
 	}
+	
+	protected abstract void draw();
+	protected abstract void update();
+	protected abstract void input();
+	
 	
 	/**
 	 * Maintains FPS and runs other timing related functions
@@ -59,9 +65,7 @@ public abstract class Game implements GameObject {
 	public void init(String windowName) {
 		Graphics.initialize();
 		Display.setTitle(windowName);
-		gom.addObject(this);
 		initInput();
-		initialize(); //should always be last call
 	}
 	
 	/**
